@@ -16,22 +16,7 @@ def initialise(V):
 			else:
 				Next[i][j] = j
 
-def constructPath(u, v):
-	global graph, Next
-	
-	# If there's no path between
-	# node u and v, simply return
-	# an empty array
-	if (Next[u][v] == -1):
-		return {}
 
-	# Storing the path in a vector
-	path = [u]
-	while (u != v):
-		u = Next[u][v]
-		path.append(u)
-
-	return path
 
 # Standard Floyd Warshall Algorithm
 # with little modification Now if we find
@@ -50,13 +35,31 @@ def floydWarshall(V):
 				if (dis[i][j] > dis[i][k] + dis[k][j]):
 					dis[i][j] = dis[i][k] + dis[k][j]
 					Next[i][j] = Next[i][k]
+					
+def constructPath(u, v):
+	global graph, Next
+	
+	# If there's no path between
+	# node u and v, simply return
+	# an empty array
+	if (Next[u][v] == -1):
+		return {}
+
+	# Storing the path in a vector
+	path = [u]
+	while (u != v):
+		u = Next[u][v]
+		path.append(u)
+	print(path)
+	return path
 
 # Prthe shortest path
 def printPath(path):
 	n = len(path)
-	for i in range(n - 1):
+	for i in range(n):
 		print(path[i], end=" -> ")
-	print (path[n - 1])
+	if(n>=1):
+		print (path[n - 1])
 
 # Returns true if edge u-v is a valid edge to be
 # include in MST. An edge is valid if one end is
@@ -96,7 +99,7 @@ def primMST(cost):
 
 		if a != -1 and b != -1:
 			print("Edge %d: (%d, %d) cost: %d" %
-				(edge_count, a, b, minn))
+				(edge_count, required[a], required[b], minn))
 			printPath(constructPath(a,b))
 			edge_count += 1
 			mincost += minn
@@ -117,16 +120,24 @@ if __name__ == "__main__":
 
 	# Print the solution
 	
-	V=4
+	V=10
 	MAXM,INF = 100,INT_MAX
 	dis = [[-1 for i in range(MAXM)] for i in range(MAXM)]
 	Next = [[-1 for i in range(MAXM)] for i in range(MAXM)]
 
 	
-	graph = [ [ 0, 3, INF, 7 ],
-			[ 8, 0, 2, INF ],
-			[ 5, INF, 0, 1 ],
-			[ 2, INF, INF, 0 ] ]
+	graph = [ 
+    [ 0, 2, INF, INF, INF, 9, INF, INF, INF, INF],
+    [ 2, 0, INF, INF, 6, INF, 4, INF, INF, INF],
+    [ INF, INF, 0, INF, 4, INF, 3, INF, 5, INF],
+    [ INF, INF, INF, 0, 2, 1, INF, INF, INF, 3],
+    [ INF, 6, 4, 2, 0, INF, INF, INF, INF, INF],
+    [ 9, INF, INF, 1, INF, 0, INF, 6, INF, INF],
+    [ INF, 4, 3, INF, INF, INF, 0, INF, INF, INF],
+    [ INF, INF, INF, INF, INF, 6, INF, 0, INF, 3],
+    [ INF, INF, 5, INF, INF, INF, INF, INF, 0, 7],
+    [ INF, INF, INF, 3, INF, INF, INF, 3, 7, 0]
+]
 
 	# Function to initialise the
 	# distance and Next array
@@ -135,7 +146,8 @@ if __name__ == "__main__":
 	# this will update the shortest
 	# distance as well as Next array
 	floydWarshall(V)
-	required=[0,1,2]
+	required=[0,5,1,2]
+	print(len(required))
 	result= [[-1 for i in range(len(required))] for i in range(len(required))]
 	global V1
 	V1=len(required)
