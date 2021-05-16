@@ -35,7 +35,7 @@ def floydWarshall(V):
 				if (dis[i][j] > dis[i][k] + dis[k][j]):
 					dis[i][j] = dis[i][k] + dis[k][j]
 					Next[i][j] = Next[i][k]
-					
+
 def constructPath(u, v):
 	global graph, Next
 	
@@ -90,7 +90,7 @@ def primMST(cost):
 		a = -1
 		b = -1
 		for i in range(V1):
-			for j in range(V1):
+			for j in range(i,V1):
 				if cost[i][j] < minn:
 					if isValidEdge(i, j, inMST):
 						minn = cost[i][j]
@@ -100,7 +100,7 @@ def primMST(cost):
 		if a != -1 and b != -1:
 			print("Edge %d: (%d, %d) cost: %d" %
 				(edge_count, required[a], required[b], minn))
-			printPath(constructPath(a,b))
+			printPath(constructPath(required[a],required[b]))
 			edge_count += 1
 			mincost += minn
 			inMST[b] = inMST[a] = True
@@ -122,8 +122,8 @@ if __name__ == "__main__":
 	
 	V=10
 	MAXM,INF = 100,INT_MAX
-	dis = [[-1 for i in range(MAXM)] for i in range(MAXM)]
-	Next = [[-1 for i in range(MAXM)] for i in range(MAXM)]
+	dis = [[-1 for i in range(V)] for i in range(V)]
+	Next = [[-1 for i in range(V)] for i in range(V)]
 
 	
 	graph = [ 
